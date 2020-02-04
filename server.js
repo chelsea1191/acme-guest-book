@@ -1,6 +1,5 @@
-console.log("hi");
-const fs = require("fs");
-const http = require("http");
+const fs = require('fs');
+const http = require('http');
 
 const readFile = file => {
   return new Promise((resolve, reject) => {
@@ -27,7 +26,7 @@ const writeFile = (file, data) => {
 };
 
 const addGuest = guest => {
-  return readFile("./guests.json")
+  return readFile('./guests.json')
     .then(data => {
       const guests = JSON.parse(data);
       let max = guests.reduce((acc, guest) => {
@@ -38,7 +37,7 @@ const addGuest = guest => {
       }, 0);
       guest.id = max + 1;
       guests.push(guest);
-      return writeFile("./guests.json", JSON.stringify(guests, null, 2));
+      return writeFile('./guests.json', JSON.stringify(guests, null, 2));
     })
     .then(() => {
       return guest;
@@ -48,8 +47,8 @@ const addGuest = guest => {
 //create a server object:
 http
   .createServer(function(req, res) {
-    if (req.url === "/api/guests") {
-      readFile("./guests.json")
+    if (req.url === '/api/guests') {
+      readFile('./guests.json')
         .then(data => {
           res.write(data);
           res.end();
@@ -59,8 +58,8 @@ http
           res.write(ex.message);
           res.end();
         });
-    } else if (req.url === "/") {
-      readFile("./index.html")
+    } else if (req.url === '/') {
+      readFile('./index.html')
         .then(data => {
           res.write(data);
           res.end();
