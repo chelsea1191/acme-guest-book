@@ -1,5 +1,6 @@
 console.log("hi");
 const fs = require("fs");
+const http = require("http");
 
 const readFile = file => {
   return new Promise((resolve, reject) => {
@@ -43,3 +44,32 @@ const addGuest = guest => {
       return guest;
     });
 };
+
+//create a server object:
+http
+  .createServer(function(req, res) {
+    if (req.url === "/api/guests") {
+      readFile("./guests.json")
+        .then(data => {
+          res.write(data);
+          res.end();
+        })
+        .catch(ex => {
+          res.statusCode = 500;
+          res.write(ex.message);
+          res.end();
+        });
+    } else if (req.url === "/") {
+      readFile("./index.html")
+        .then(data => {
+          res.write(data);
+          res.end();
+        })
+        .catch(ex => {
+          res.statusCode = 500;
+          res.write(ex.message);
+          res.end();
+        });
+    }
+  })
+  .listen(8080); //the server object listens on port 8080
